@@ -54,10 +54,10 @@ HAVING COUNT(orders.OrderID) > 10;
 ------------------------------------------------------------------------------------------------------------------------
 -- 5- Liste des clients dont le montant cumulé de toutes les commandes passées est supérieur à 30000 € :
 SELECT CompanyName AS Client, SUM(UnitPrice * Quantity * (1 - Discount)) AS CA, Country AS Pays
-FROM 'customers'
-JOIN 'orders' ON customers.CustomerID = orders.CustomerID
-JOIN 'order details' ON orders.OrderID = 'order details'.OrderID
-GROUP BY CustomerID
+FROM customers
+JOIN orders ON customers.CustomerID = orders.CustomerID
+JOIN `order details` ON orders.OrderID = `order details`.OrderID
+GROUP BY customers.CustomerID
 HAVING CA > 30000
 ORDER BY CA DESC;
 --Explications :
@@ -75,25 +75,28 @@ ORDER BY CA DESC;
 SELECT DISTINCT customers.Country AS Pays
 FROM customers
 JOIN orders ON customers.CustomerID = orders.CustomerID
-JOIN order_details od ON orders.OrderID = od.OrderID
+JOIN `order details` od ON orders.OrderID = od.OrderID
 JOIN products ON od.ProductID = products.ProductID
 JOIN suppliers ON products.SupplierID = suppliers.SupplierID
-WHERE suppliers.CompanyName = 'Exotic Liquids';
+WHERE suppliers.CompanyName = `Exotic Liquids`
+ORDER BY Pays ASC;
 --Explication :
 --JOIN est utilisé pour joindre les tables entre elles en utilisant les clés étrangères CustomerID, OrderID, ProductID, SupplierID
 --qui permettent de lier les informations sur les commandes, les produits, les clients et les fournisseurs.
 --DISTINCT est utilisé pour ne pas afficher plusieurs fois le même pays si plusieurs commandes ont été livrées dans ce pays.
 --WHERE est utilisé pour sélectionner seulement les produits fournis par "Exotic Liquids" en utilisant le nom de la compagnie dans la table "suppliers".
 
-
 ------------------------------------------------------------------------------------------------------------------------
 -- 7- Chiffre d'affaires global sur les ventes de 1997 :
+
 
 ------------------------------------------------------------------------------------------------------------------------
 -- 8- Chiffre d'affaires détaillé par mois, sur les ventes de 1997 : 
 
+
 ------------------------------------------------------------------------------------------------------------------------
 -- 9- A quand remonte la dernière commande du client nommé "Du monde entier" ? 
+
 
 ------------------------------------------------------------------------------------------------------------------------
 -- 10- Quel est le délai moyen de livraison en jours ? 

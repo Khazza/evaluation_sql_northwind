@@ -4,7 +4,7 @@
 SELECT CompanyName AS 'Société' , ContactName AS 'Contact' , ContactTitle AS 'Fonction', Phone AS 'Téléphone' 
 FROM customers 
 WHERE Country = 'France'; 
---Explication: 
+--Explication : 
 --On sélectionne les colonnes permettant de récuperer les nom de société (CompanyName), noms des clients (ContactName), leur fonction (ContactTitle), et numéro de tel (Phone)
 --de la table customers où la valeur de la colonne Country est égale à 'France'.
 
@@ -43,7 +43,7 @@ JOIN orders ON customers.CustomerID = orders.CustomerID
 WHERE customers.Country = 'France'
 GROUP BY customers.CustomerID
 HAVING COUNT(orders.OrderID) > 10;
---Explication de la requête :
+--Explication :
 --La clause "AS" est utilisée pour renommer les colonnes.
 --On utilise la commande "JOIN" pour joindre les tables "customers" et "orders" en utilisant la clé étrangère "CustomerID".
 --On lance la requête avec la clause "WHERE" pour filtrer les résultats et ne sélectionner que les clients français avec la valeur 'France'.
@@ -60,7 +60,7 @@ JOIN `order details` ON orders.OrderID = `order details`.OrderID
 GROUP BY customers.CustomerID
 HAVING CA > 30000
 ORDER BY CA DESC;
---Explications :
+--Explication :
 --La clause SELECT affiche les colonnes CompanyName de la table customers pour le nom du client, 
 --la somme de UnitPrice * Quantity * (1 - Discount) de la table order details pour le chiffre d'affaires (CA), 
 --et Country de la table customers pour le pays.

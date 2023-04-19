@@ -88,7 +88,15 @@ ORDER BY Pays ASC;
 
 ------------------------------------------------------------------------------------------------------------------------
 -- 7- Chiffre d'affaires global sur les ventes de 1997 :
-
+SELECT SUM(UnitPrice * Quantity) AS 'Montant Ventes 97'
+FROM `order details` 
+JOIN `orders` ON orders.OrderID = `order details`.`OrderID` 
+WHERE YEAR(OrderDate) = 1997;
+--Explication :
+--SELECT affiche la somme du prix unitaire par la quantité, en tant que chiffre d'affaire sur les ventes de 1997
+--FROM spéficie la table à utiliser.
+--JOIN relie les tables orders et et order details par la clé étrangère OrderID.
+--WHERE applique la condition de recherche sur l'année de 1997
 
 ------------------------------------------------------------------------------------------------------------------------
 -- 8- Chiffre d'affaires détaillé par mois, sur les ventes de 1997 : 

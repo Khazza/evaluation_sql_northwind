@@ -1,4 +1,4 @@
----- La base Northwind
+-- La base Northwind
 -- Ecrivez ensuite les requêtes permettant d'obtenir les résultats attendus suivants :
 -- 1- Liste des clients français : 
 SELECT CompanyName AS 'Société' , ContactName AS 'Contact' , ContactTitle AS 'Fonction', Phone AS 'Téléphone' 

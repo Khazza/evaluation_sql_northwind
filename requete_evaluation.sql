@@ -27,7 +27,7 @@ FROM suppliers
 JOIN products ON suppliers.SupplierID = products.SupplierID
 WHERE suppliers.Country = 'France'
 GROUP BY suppliers.CompanyName
-ORDER BY COUNT(p.ProductID) DESC;
+ORDER BY COUNT(products.ProductID) DESC;
 --Explication :
 --La requête joint les tables "suppliers" et "products" avec une clause JOIN, 
 --utilise la clause WHERE pour filtrer les fournisseurs français, 
@@ -37,14 +37,6 @@ ORDER BY COUNT(p.ProductID) DESC;
 
 ------------------------------------------------------------------------------------------------------------------------
 -- 4- Liste des clients français ayant passé plus de 10 commandes : 
-SELECT CompanyName AS Client, COUNT(OrderId) as Nbre_commandes
-FROM `customers` 
-JOIN `orders` 
-ON orders.CustomerID = customers.CustomerID 
-WHERE Country = 'France' 
-GROUP BY Client 
-HAVING Nbre_commandes > 10;
----------
 SELECT customers.CompanyName AS Client, COUNT(orders.OrderID) AS `Nbre commandes`
 FROM customers
 JOIN orders ON customers.CustomerID = orders.CustomerID
@@ -52,64 +44,46 @@ WHERE customers.Country = 'France'
 GROUP BY customers.CustomerID
 HAVING COUNT(orders.OrderID) > 10;
 --Explication de la requête :
---La première ligne de la requête sélectionne la colonne "CompanyName" de la table "customers" et la renomme en "Client", 
---ainsi que la colonne "OrderID" de la table "orders" et la renomme en "Nbre commandes". La clause "AS" est utilisée pour renommer les colonnes.
---La deuxième ligne de la requête utilise la commande "JOIN" pour joindre les tables "customers" et "orders" en utilisant la clé étrangère "CustomerID".
---La troisième ligne de la requête utilise la clause "WHERE" pour filtrer les résultats et ne sélectionner que les clients français. 
---La valeur 'France' est utilisée pour sélectionner les clients français.
---La quatrième ligne de la requête utilise la commande "GROUP BY" pour regrouper les résultats par client. 
---La fonction COUNT est utilisée pour compter le nombre de commandes passées par chaque client.
---La cinquième ligne de la requête utilise la clause "HAVING" pour filtrer les résultats et ne sélectionner que les clients ayant passé plus de 10 commandes. 
---La fonction COUNT est utilisée pour filtrer les clients ayant passé plus de 10 commandes.
+--La clause "AS" est utilisée pour renommer les colonnes.
+--On utilise la commande "JOIN" pour joindre les tables "customers" et "orders" en utilisant la clé étrangère "CustomerID".
+--On lance la requête avec la clause "WHERE" pour filtrer les résultats et ne sélectionner que les clients français avec la valeur 'France'.
+--La commande "GROUP BY" pour regrouper les résultats par client. 
+--La clause "HAVING" pour filtrer les résultats et ne sélectionner que les clients ayant passé plus de 10 commandes. 
+--La fonction COUNT est utilisée pour compter le nombre de commandes passées par chaque client et est utilisée pour filtrer les clients ayant passé plus de 10 commandes.
+
 ------------------------------------------------------------------------------------------------------------------------
 -- 5- Liste des clients dont le montant cumulé de toutes les commandes passées est supérieur à 30000 € :
-SELECT SUM(UnitPrice * Quantity) AS 'CA' , CompanyName as 'client' 
-FROM `customers` 
-INNER JOIN `orders` ON orders.CustomerID = customers.CustomerID
-JOIN `order_details` ON `order_details`.orderID = orders.OrderID 
-GROUP BY Client HAVING CA > 30000;
-----
-SELECT customers.CompanyName AS Client, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS CA, customers.Country AS Pays
-FROM customers
-JOIN orders ON customers.CustomerID = orders.CustomerID
-JOIN order_details od ON orders.OrderID = od.OrderID
-GROUP BY customers.CustomerID
+SELECT CompanyName AS Client, SUM(UnitPrice * Quantity * (1 - Discount)) AS CA, Country AS Pays
+FROM 'customers'
+JOIN 'orders' ON customers.CustomerID = orders.CustomerID
+JOIN 'order details' ON orders.OrderID = 'order details'.OrderID
+GROUP BY CustomerID
 HAVING CA > 30000
 ORDER BY CA DESC;
 --Explications :
---La clause SELECT sélectionne les colonnes CompanyName de la table customers pour le nom du client, 
---la somme de UnitPrice * Quantity * (1 - Discount) de la table order details pour le chiffre d'affaires (CA), et Country de la table customers pour le pays.
---La clause FROM spécifie les tables à utiliser : customers, orders, et order details.
---La clause JOIN relie les tables entre elles en utilisant les clés étrangères CustomerID et OrderID.
---La clause GROUP BY regroupe les résultats par CustomerID.
---La clause HAVING filtre les résultats en fonction de la condition CA > 30000.
---La clause ORDER BY trie les résultats par ordre décroissant de CA.
+--La clause SELECT affiche les colonnes CompanyName de la table customers pour le nom du client, 
+--la somme de UnitPrice * Quantity * (1 - Discount) de la table order details pour le chiffre d'affaires (CA), 
+--et Country de la table customers pour le pays.
+--FROM spécifie la table à utiliser : customers
+--JOIN relie les tables orders, et order details. entre elles en utilisant les clés étrangères CustomerID et OrderID.
+--GROUP BY regroupe les résultats par CustomerID.
+--HAVING filtre les résultats en fonction de la condition CA > 30000.
+--ORDER BY trie les résultats par ordre décroissant de CA.
 
 ------------------------------------------------------------------------------------------------------------------------
 -- 6- Liste des pays dans lesquels des produits fournis par "Exotic Liquids" ont été livrés : 
-SELECT ShipCountry AS pays
-FROM `orders` 
-JOIN `order details`
-ON `order details`.`OrderID` = orders.OrderID 
-JOIN `products` 
-ON products.ProductID = `order details`.`ProductID`
-JOIN `suppliers` 
-ON suppliers.SupplierID = products.SupplierID
-WHERE suppliers.CompanyName = 'Exotic Liquids' 
-GROUP BY pays;
-----
-SELECT DISTINCT c.Country AS Pays
-FROM customers c
-JOIN orders o ON c.CustomerID = o.CustomerID
-JOIN order_details od ON o.OrderID = od.OrderID
-JOIN products p ON od.ProductID = p.ProductID
-JOIN suppliers s ON p.SupplierID = s.SupplierID
-WHERE s.CompanyName = 'Exotic Liquids';
+SELECT DISTINCT customers.Country AS Pays
+FROM customers
+JOIN orders ON customers.CustomerID = orders.CustomerID
+JOIN order_details od ON orders.OrderID = od.OrderID
+JOIN products ON od.ProductID = products.ProductID
+JOIN suppliers ON products.SupplierID = suppliers.SupplierID
+WHERE suppliers.CompanyName = 'Exotic Liquids';
 --Explication :
---La clause INNER JOIN est utilisée pour joindre les tables entre elles en utilisant les clés étrangères (CustomerID, OrderID, ProductID, SupplierID) 
+--JOIN est utilisé pour joindre les tables entre elles en utilisant les clés étrangères CustomerID, OrderID, ProductID, SupplierID
 --qui permettent de lier les informations sur les commandes, les produits, les clients et les fournisseurs.
---La clause DISTINCT est utilisée pour ne pas afficher plusieurs fois le même pays si plusieurs commandes ont été livrées dans ce pays.
---La condition WHERE est utilisée pour sélectionner seulement les produits fournis par "Exotic Liquids" en utilisant le nom de la compagnie dans la table "suppliers".
+--DISTINCT est utilisé pour ne pas afficher plusieurs fois le même pays si plusieurs commandes ont été livrées dans ce pays.
+--WHERE est utilisé pour sélectionner seulement les produits fournis par "Exotic Liquids" en utilisant le nom de la compagnie dans la table "suppliers".
 
 
 ------------------------------------------------------------------------------------------------------------------------

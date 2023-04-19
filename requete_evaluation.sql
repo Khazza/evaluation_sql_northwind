@@ -22,19 +22,11 @@ WHERE suppliers.CompanyName = 'Exotic Liquids';
 
 ------------------------------------------------------------------------------------------------------------------------
 -- 3- Nombre de produits mis à disposition par les fournisseurs français (tri par nombre de produits décroissant) : 
-SELECT CompanyName AS 'Fournisseur', COUNT(UnitsOnOrder) AS 'Nombre_produits'
-FROM `suppliers` 
-JOIN `products` ON products.SupplierID = suppliers.SupplierID 
-WHERE Country = 'France' 
-GROUP BY Fournisseur
-ORDER BY UnitsInStock DESC;
-
---Autre possibilité :
-SELECT s.CompanyName AS Fournisseurs, COUNT(p.ProductID) AS `Nbre produits`
-FROM suppliers s
-JOIN products p ON s.SupplierID = p.SupplierID
-WHERE s.Country = 'France'
-GROUP BY s.CompanyName
+SELECT suppliers.CompanyName AS Fournisseurs, COUNT(products.ProductID) AS `Nbre produits`
+FROM suppliers
+JOIN products ON suppliers.SupplierID = products.SupplierID
+WHERE suppliers.Country = 'France'
+GROUP BY suppliers.CompanyName
 ORDER BY COUNT(p.ProductID) DESC;
 --Explication :
 --La requête joint les tables "suppliers" et "products" avec une clause JOIN, 

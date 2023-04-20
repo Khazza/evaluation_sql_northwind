@@ -165,7 +165,7 @@ WHERE CompanyName = 'Du monde entier';
 -- 10- Quel est le délai moyen de livraison en jours ? 
 SELECT ROUND(AVG(DATEDIFF(ShippedDate, OrderDate))) AS `Delai moyen de livraison en jours` 
 FROM orders 
-WHERE ShippedDate IS NOT NULL;-----------------
+WHERE ShippedDate IS NOT NULL;
 --Explications :
 --SELECT AVG() permet de calculer la moyenne des valeurs.
 --DATEDIFF(ShippedDate, OrderDate) permet de calculer la différence entre la date d'expédition et la date de commande en jours.

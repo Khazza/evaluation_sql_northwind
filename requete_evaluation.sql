@@ -1,4 +1,5 @@
--- La base Northwind
+------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------La base Northwind-----------------------------------------------------------
 -- Ecrivez ensuite les requêtes permettant d'obtenir les résultats attendus suivants :
 -- 1- Liste des clients français : 
 SELECT CompanyName AS 'Société' , ContactName AS 'Contact' , ContactTitle AS 'Fonction', Phone AS 'Téléphone' 
@@ -13,7 +14,7 @@ WHERE Country = 'France';
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
 -- 2- Liste des produits vendus par le fournisseur "Exotic Liquids" :
-SELECT products.ProductName AS 'Produit', products.UnitPrice AS 'Prix'
+SELECT products.ProductName ------------------------------------------------------------------------------------------------------------------------AS 'Produit', products.UnitPrice AS 'Prix'
 FROM products
 INNER JOIN suppliers ON products.SupplierID = suppliers.SupplierID
 WHERE suppliers.CompanyName = 'Exotic Liquids';
@@ -47,7 +48,7 @@ SELECT customers.CompanyName AS 'Client', COUNT(orders.OrderID) AS `Nbre command
 FROM customers
 JOIN orders ON customers.CustomerID = orders.CustomerID
 WHERE customers.Country = 'France'
-GROUP BY customers.CustomerID
+GROUP BY customers.CustomerID------------------------------------------------------------------------------------------------------------------------
 HAVING COUNT(orders.OrderID) > 10;
 --Explication :
 --On utilise la commande "JOIN" pour joindre les tables "customers" et "orders" en utilisant la clé étrangère "CustomerID".
@@ -139,7 +140,7 @@ GROUP BY MONTH(orders.OrderDate);
 --YEAR(orders.OrderDate) = 1997 filtre les commandes passées en 1997.
 --GROUP BY regroupe les résultats par mois de commande.
 
------- autre possibilité :
+------ Autre possibilité :
 SELECT MONTH(OrderDate) AS `Mois 97`, SUM(UnitPrice * Quantity) AS `Montant Ventes`
 FROM `order details` 
 JOIN orders ON orders.OrderID = `order details`.`OrderID` 

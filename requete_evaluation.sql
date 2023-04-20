@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------------------------------------------------
---------------------------------------------La base Northwind-----------------------------------------------------------
+-----------------------------------------------La base Northwind--------------------------------------------------------
 -- Ecrivez ensuite les requêtes permettant d'obtenir les résultats attendus suivants :
 -- 1- Liste des clients français : 
 SELECT CompanyName AS 'Société' , ContactName AS 'Contact' , ContactTitle AS 'Fonction', Phone AS 'Téléphone' 
@@ -14,7 +14,7 @@ WHERE Country = 'France';
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
 -- 2- Liste des produits vendus par le fournisseur "Exotic Liquids" :
-SELECT products.ProductName ------------------------------------------------------------------------------------------------------------------------AS 'Produit', products.UnitPrice AS 'Prix'
+SELECT products.ProductName AS 'Produit', products.UnitPrice AS 'Prix'
 FROM products
 INNER JOIN suppliers ON products.SupplierID = suppliers.SupplierID
 WHERE suppliers.CompanyName = 'Exotic Liquids';
@@ -48,14 +48,15 @@ SELECT customers.CompanyName AS 'Client', COUNT(orders.OrderID) AS `Nbre command
 FROM customers
 JOIN orders ON customers.CustomerID = orders.CustomerID
 WHERE customers.Country = 'France'
-GROUP BY customers.CustomerID------------------------------------------------------------------------------------------------------------------------
+GROUP BY customers.CustomerID
 HAVING COUNT(orders.OrderID) > 10;
 --Explication :
 --On utilise la commande "JOIN" pour joindre les tables "customers" et "orders" en utilisant la clé étrangère "CustomerID".
 --On lance la requête avec la clause "WHERE" pour filtrer les résultats et ne sélectionner que les clients français avec la valeur 'France'.
 --La commande "GROUP BY" pour regrouper les résultats par client. 
 --La clause "HAVING" pour filtrer les résultats et ne sélectionner que les clients ayant passé plus de 10 commandes. 
---La fonction COUNT est utilisée pour compter le nombre de commandes passées par chaque client et est utilisée pour filtrer les clients ayant passé plus de 10 commandes.
+--La fonction COUNT est utilisée pour compter le nombre de commandes passées par chaque client
+--et est utilisée pour filtrer les clients ayant passé plus de 10 commandes.
 
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -135,7 +136,7 @@ WHERE YEAR(orders.OrderDate) = 1997
 GROUP BY MONTH(orders.OrderDate);
 --Explications:
 --MONTH extrait le mois de la date de commande.
---UnitPrice * Quantity * (1 - Discount) calcule le chiffre d'affaires de chaque ligne de commande.
+--UnitPrice * Quantity * (1 - Discount) calcule le chiffre d'affaires de chaque ligne de commande.-----------------
 --JOIN relie les tables orders, order details, et products.
 --YEAR(orders.OrderDate) = 1997 filtre les commandes passées en 1997.
 --GROUP BY regroupe les résultats par mois de commande.
@@ -164,7 +165,7 @@ WHERE CompanyName = 'Du monde entier';
 -- 10- Quel est le délai moyen de livraison en jours ? 
 SELECT ROUND(AVG(DATEDIFF(ShippedDate, OrderDate))) AS `Delai moyen de livraison en jours` 
 FROM orders 
-WHERE ShippedDate IS NOT NULL;
+WHERE ShippedDate IS NOT NULL;-----------------
 --Explications :
 --SELECT AVG() permet de calculer la moyenne des valeurs.
 --DATEDIFF(ShippedDate, OrderDate) permet de calculer la différence entre la date d'expédition et la date de commande en jours.
